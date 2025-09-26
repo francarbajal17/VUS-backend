@@ -20,6 +20,7 @@ mongoose.connect(process.env.MONGODB_URI)
 // Importar modelos
 const Item = require('./models/Item');
 const Drop = require('./models/Drop');
+const Category = require('./models/Category')
 
 app.get('/api/drops', async (req, res) => {
   try {
@@ -40,6 +41,25 @@ app.post('/api/drops', async (req, res) => {
   }
 });
 
+app.get('/api/categories', async (req, res) => {
+  try {
+    const categories = await Category.find();
+    res.json(categories);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.post('/api/categories', async (req, res) => {
+  try {
+    const category = new Category(req.body);
+    await category.save();
+    res.status(201).json(category);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
 app.get('/api/items', async (req, res) => {
   try {
     const items = await Item.find().populate('drop');
@@ -48,6 +68,19 @@ app.get('/api/items', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+// app.get('/api/principal-items', async(req, res) => {
+//   try {
+//     const principalItems = await Item.find({principalItem: true}).populate('category');
+//     const categories = await Category.find();
+
+    
+
+//     res.json(items);
+//   } catch (error) {
+//     res.status(500).json({ error: error.message });
+//   }
+// });
 
 app.post('/api/items', async (req, res) => {
   try {
@@ -61,7 +94,7 @@ app.post('/api/items', async (req, res) => {
 
 // Simple API endpoint
 app.get('/api', (req, res) => {
-  res.json({ message: 'Hello from Express backend!' });
+  res.json({ message: 'API is working' });
 });
 
 app.listen(PORT, () => {

@@ -1,24 +1,48 @@
 const mongoose = require('mongoose');
 
 const itemSchema = new mongoose.Schema({
-  nombre: {
+  name: {
     type: String,
     required: true
   },
-  categoria: {
-    type: String,
-    required: false
-  },
-  talle: {
-    type: String,
-    enum: ['S', 'M', 'L', 'XL'],
+  category: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Category',
     required: true
   },
-  fotos: [{
+  principalItem: {
+    type: Boolean,
+    required: true
+  },
+  sizes: {
+    type: [],
+    required: true
+  },
+  frontImage: {
     type: String,
     required: true
-  }],
-  sexo: {
+  },
+  backImage: {
+    type: String,
+    required: true
+  },
+  section1LeftImage: {
+    type: String,
+    required: true
+  },
+  section1RightImage: {
+    type: String,
+    required: true
+  },
+  section2LeftImage: {
+    type: String,
+    required: true
+  },
+  section2RightImage: {
+    type: String,
+    required: true
+  },
+  genre: {
     type: String,
     enum: ['Masculino', 'Femenino'],
     required: false
@@ -27,22 +51,22 @@ const itemSchema = new mongoose.Schema({
     type: String,
     required: false
   },
-  corte: {
+  cut: {
     type: String,
     required: false
   },
-  detalles: {
+  details: {
     type: String,
     required: false
   },
-  precio: {
+  price: {
     type: Number,
     required: true
   },
   drop: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Drop',
-    required: false
+    required: true
   }
 }, {
   timestamps: true

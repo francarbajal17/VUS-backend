@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const dropSchema = new mongoose.Schema({
+const categorySchema = new mongoose.Schema({
   name: {
     type: String,
     required: true
@@ -9,4 +9,4 @@ const dropSchema = new mongoose.Schema({
   timestamps: true
 });
 
-module.exports = mongoose.model('Drop', dropSchema);
+module.exports = mongoose.model('Category', categorySchema);
