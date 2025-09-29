@@ -69,18 +69,22 @@ app.get('/api/items', async (req, res) => {
   }
 });
 
-// app.get('/api/principal-items', async(req, res) => {
-//   try {
-//     const principalItems = await Item.find({principalItem: true}).populate('category');
-//     const categories = await Category.find();
+app.get('/api/principal-items', async(req, res) => {
+  try {
+    const principalItems = await Item.find({principalItem: true}).populate('category');
 
-    
+    const grouped = principalItems.reduce((acc, item) => {
+      const key = item.category.name;
+      if(!acc[key]) acc[key] = [];
+      acc[key].push(item);
+      return acc;
+    }, {});
 
-//     res.json(items);
-//   } catch (error) {
-//     res.status(500).json({ error: error.message });
-//   }
-// });
+    res.json(grouped);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 app.post('/api/items', async (req, res) => {
   try {
