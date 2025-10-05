@@ -96,6 +96,29 @@ app.post('/api/items', async (req, res) => {
   }
 });
 
+app.get('/api/items/:id', async(req, res) => {
+  try {
+    const { id } = req.params;
+    const item = await Item.findById(id);
+    if (!item) {
+      return res.status(404).json({ error: 'Item not found' });
+    }
+    res.json(item);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.get('/api/items-category/:category_id', async(req, res) => {
+  try {
+    const { category_id } = req.params;
+    const items = await Item.find({ category: category_id }).populate('category');
+    res.json(items);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // Simple API endpoint
 app.get('/api', (req, res) => {
   res.json({ message: 'API is working' });
